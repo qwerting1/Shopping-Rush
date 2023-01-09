@@ -6,10 +6,13 @@ public class Playerlook : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    public Transform playerBody; //reference our player
+    public Transform PlayerBody;
+    public float MouseSensitivity = 1.5f;
+    public float LookUpLimit = -55f;
+    public float LookDownLimit = 40f;
 
-    public float mouseSensitivity = 100f; //choose how sensitive the mouse will be
     float yRotation;
+    float xRotation = 0;
 
     void Start()
     {
@@ -22,7 +25,16 @@ public class Playerlook : MonoBehaviour
         var mouseX = Input.GetAxisRaw("Mouse X");
         var mouseY = Input.GetAxisRaw("Mouse Y");
 
-        yRotation += mouseX;
-        playerBody.transform.rotation = Quaternion.Euler(0, yRotation, 0);
+        yRotation += mouseX * MouseSensitivity;
+        xRotation -= mouseY * MouseSensitivity;
+    }
+
+    private void FixedUpdate()
+    {
+        PlayerBody.transform.rotation = Quaternion.Euler(0, yRotation, 0);
+        Debug.Log("x: " + xRotation);
+        // Debug.Log("y: " + yRotation);
+        xRotation = Mathf.Clamp(xRotation, LookUpLimit, LookDownLimit);
+        transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
     }
 }
