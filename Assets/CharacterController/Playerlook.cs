@@ -32,8 +32,6 @@ public class Playerlook : MonoBehaviour
     private void FixedUpdate()
     {
         PlayerBody.transform.rotation = Quaternion.Euler(0, yRotation, 0);
-        Debug.Log("x: " + xRotation);
-        // Debug.Log("y: " + yRotation);
         xRotation = Mathf.Clamp(xRotation, LookUpLimit, LookDownLimit);
         transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
     }

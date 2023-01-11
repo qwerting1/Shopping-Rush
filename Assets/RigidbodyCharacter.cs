@@ -5,11 +5,13 @@ using UnityEngine;
 public class RigidbodyCharacter : MonoBehaviour
 {
 
-    public float Speed = 5f;
     public float JumpForce = 2f;
     public float GroundDistance = 0.2f;
     public LayerMask Ground;
+    public float SprintSpeed = 160f;
+    public float WalkSpeed = 80f;
 
+    private float Speed;
     private Rigidbody body;
     private bool isGrounded = true;
     private Transform groundChecker;
@@ -17,6 +19,7 @@ public class RigidbodyCharacter : MonoBehaviour
 
     void Start()
     {
+        Speed = WalkSpeed;
         body = GetComponent<Rigidbody>();
         groundChecker = transform.GetChild(0);
     }
@@ -32,26 +35,36 @@ public class RigidbodyCharacter : MonoBehaviour
         if (isGrounded)
         {
             body.drag = 8f;
-        } else
+        }
+        else
         {
             body.drag = 2f;
         }
 
         if (Input.GetButtonDown("Jump") && isGrounded)
-        { 
+        {
             body.velocity = new Vector3(body.velocity.x, 0, body.velocity.z);
             body.AddForce(transform.up * JumpForce, ForceMode.Impulse);
+        }
+
+        if (Input.GetButtonDown("Sprint") && isGrounded)
+        {
+            Speed = SprintSpeed;
+        }
+        else if (Input.GetButtonUp("Sprint"))
+        {
+            Speed = WalkSpeed;
         }
     }
 
     void FixedUpdate()
     {
-        
+
         var moveSpeed = Speed;
-        if (!isGrounded) {
+        if (!isGrounded)
+        {
             moveSpeed = Speed / 6;
         }
-
         body.AddForce(moveDirection.normalized * moveSpeed, ForceMode.Acceleration);
     }
 
