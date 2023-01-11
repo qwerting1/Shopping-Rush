@@ -5,11 +5,12 @@ using UnityEngine;
 public class RigidbodyCharacter : MonoBehaviour
 {
 
-    public float JumpForce = 2f;
+    public float JumpForce = 500f;
     public float GroundDistance = 0.2f;
     public LayerMask Ground;
     public float SprintSpeed = 160f;
     public float WalkSpeed = 80f;
+    public float SlideSpeed = 8000f;
 
     private float Speed;
     private Rigidbody body;
@@ -54,6 +55,12 @@ public class RigidbodyCharacter : MonoBehaviour
         else if (Input.GetButtonUp("Sprint"))
         {
             Speed = WalkSpeed;
+        }
+
+        if (Input.GetButtonDown("Slide") && isGrounded)
+        {
+            var slideDirection = transform.forward;
+            body.AddForce(slideDirection.normalized * SlideSpeed, ForceMode.Impulse);
         }
     }
 

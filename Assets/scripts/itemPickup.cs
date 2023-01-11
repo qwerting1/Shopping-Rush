@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class itemPickup : MonoBehaviour
 {
+    public Material NormalMaterial;
+    public Material InteractMaterial;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        item.GetComponent<MeshRenderer>().material = NormalMaterial;
     }
 
     // Update is called once per frame
@@ -17,22 +20,29 @@ public class itemPickup : MonoBehaviour
     }
 
     [SerializeField] public GameObject item;
-    void OnTriggerEnter(Collider other) 
+
+    private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag=="Player")
+        if (other.gameObject.tag == "Player")
         {
-            if(Input.GetKeyDown("space"))
-            {
-                print("space key was pressed");
-            }
-            Debug.Log("player is in");
+            item.GetComponent<MeshRenderer>().material = InteractMaterial;
         }
     }
-    void OnTriggerExit(Collider other) 
+    void OnTriggerStay(Collider other)
     {
-        if(other.gameObject.tag=="Player")
+        if (other.gameObject.tag == "Player")
         {
-            Debug.Log("player is out");
+            if (Input.GetButton("Interact"))
+            {
+                Destroy(item);
+            }
+        }
+    }
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            item.GetComponent<MeshRenderer>().material = NormalMaterial;
         }
     }
 }
