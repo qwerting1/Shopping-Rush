@@ -34,6 +34,7 @@ public class itemPickup : MonoBehaviour
         {
             if (Input.GetButton("Interact"))
             {
+                SendTag(); //send the tag of this item to the charatcer's RandomList.cs
                 Destroy(item);
             }
         }
@@ -44,5 +45,21 @@ public class itemPickup : MonoBehaviour
         {
             item.GetComponent<MeshRenderer>().material = NormalMaterial;
         }
+    }
+
+    public int data;
+
+    //public void SendData()
+    //{
+    //    GameObject otherObject = GameObject.Find("character rigid");
+    //    RandomList otherScript = otherObject.GetComponent<RandomList>();
+    //    otherScript.ReceiveData(data);
+    //}
+
+    public void SendTag()
+    {
+        GameObject otherObject = GameObject.Find("character rigid");
+        RandomList otherScript = otherObject.GetComponent<RandomList>();
+        otherScript.ReceiveTag(gameObject.tag);
     }
 }

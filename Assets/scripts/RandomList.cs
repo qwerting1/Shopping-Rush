@@ -9,6 +9,7 @@ public class RandomList : MonoBehaviour
     public TMP_Text wordText;
 
     private List<string> RandomWordList;
+    private string itemTag; //tag from item
     void Start()
     {
         RandomWordList = new List<string>();
@@ -25,5 +26,17 @@ public class RandomList : MonoBehaviour
             tempWordList.RemoveAt(randomIndex);
         }
         wordText.text = string.Join("\n", RandomWordList.ToArray());
+    }
+
+    //void Update()
+    //{
+    //}
+
+    public void ReceiveTag(string tag)
+    {
+        itemTag = tag;
+        Debug.Log("Received tag: " + tag); //recieve the item's tag from the script itemPickup.cs
+        RandomWordList.Remove(itemTag); //remove the item from the list
+        wordText.text = string.Join("\n", RandomWordList.ToArray()); // update the list
     }
 }
