@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 5937740418996200255}
   m_Layer: 0
   m_Name: collecable
-  m_TagString: Untagged
+  m_TagString: beans
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -132,6 +132,7 @@ MonoBehaviour:
   NormalMaterial: {fileID: 2100000, guid: 9dc26571724473c439c77a27d6396ea9, type: 2}
   InteractMaterial: {fileID: 2100000, guid: c9a32c63b4571b44a8aea1461a054886, type: 2}
   item: {fileID: 4874189505042716365}
+  data: 0
 --- !u!65 &5937740418996200255
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -143,5 +144,5 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.6483288, y: 3.9758995, z: 3.248076}
-  m_Center: {x: 0.054270305, y: -0.31761473, z: 0.04975111}
+  m_Size: {x: 1.11, y: 3.9758995, z: 6.52}
+  m_Center: {x: 0.01, y: -0.31761473, z: -2.66}
