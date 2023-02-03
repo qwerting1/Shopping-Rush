@@ -5,6 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - beans
+  - peaches
+  - peas
+  - pineapple
+  - soup
+  - custard
+  - carrots
   layers:
   - Default
   - TransparentFX
