@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Raycast : MonoBehaviour
 {
-    public float raycastDistance = 100f;
+    public float raycastDistance = 5f;
     public float AlphaValueWhenLookedAt = 0.5f;
 
     private Color modColor;

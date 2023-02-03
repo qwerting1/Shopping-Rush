@@ -467,7 +467,7 @@ GameObject:
   - component: {fileID: 321997196}
   - component: {fileID: 321997195}
   m_Layer: 0
-  m_Name: Cube (6)
+  m_Name: Middle Shelf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -544,12 +544,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 321997194}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.98, z: 0}
+  m_LocalPosition: {x: 6.508, y: -0.013000011, z: -0.06099987}
   m_LocalScale: {x: 13.581, y: 0.035532724, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1299699327}
-  m_RootOrder: 1
+  m_Father: {fileID: 1988005787}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &409061215
 GameObject:
@@ -968,6 +968,54 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &898592113
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 898592114}
+  - component: {fileID: 898592115}
+  m_Layer: 0
+  m_Name: Top Shelf Pivot
+  m_TagString: Untagged
+  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &898592114
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 898592113}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -6.508, y: 1.96, z: 0.06099987}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 917247258}
+  m_Father: {fileID: 1299699327}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &898592115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 898592113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acde7b4e06f4fa048bebcd9f24ce8528, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Beans: {fileID: 4874189505042716365, guid: e9df803fbf09d4e42b978abd58a55ebd, type: 3}
+  NumberOfCans: 14
+  SpaceBetweenCans: 1
 --- !u!1 &917247254
 GameObject:
   m_ObjectHideFlags: 0
@@ -981,7 +1029,7 @@ GameObject:
   - component: {fileID: 917247256}
   - component: {fileID: 917247255}
   m_Layer: 0
-  m_Name: Cube (7)
+  m_Name: Top Shelf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1058,12 +1106,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 917247254}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.94, z: 0}
+  m_LocalPosition: {x: 6.508, y: -0.01999998, z: -0.06099987}
   m_LocalScale: {x: 13.581, y: 0.035532724, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1299699327}
-  m_RootOrder: 2
+  m_Father: {fileID: 898592114}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1082087006
 Mesh:
@@ -1071,7 +1119,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh29544
+  m_Name: pb_Mesh53738
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1515,8 +1563,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 470877944}
-  - {fileID: 321997198}
-  - {fileID: 917247258}
+  - {fileID: 1988005787}
+  - {fileID: 898592114}
   m_Father: {fileID: 0}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1640,7 +1688,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh29524
+  m_Name: pb_Mesh53720
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2418,8 +2466,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29273b1ab8aa78a43a4031b82edfa446, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  raycastDistance: 100
+  raycastDistance: 5
   AlphaValueWhenLookedAt: 0.5
+--- !u!1 &1988005786
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1988005787}
+  - component: {fileID: 1988005788}
+  m_Layer: 0
+  m_Name: Middle Shelf Pivot
+  m_TagString: Untagged
+  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1988005787
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1988005786}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -6.508, y: 0.99300003, z: 0.06099987}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 321997198}
+  m_Father: {fileID: 1299699327}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1988005788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1988005786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acde7b4e06f4fa048bebcd9f24ce8528, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Beans: {fileID: 4874189505042716365, guid: e9df803fbf09d4e42b978abd58a55ebd, type: 3}
+  NumberOfCans: 14
+  SpaceBetweenCans: 1
 --- !u!1 &2120139810
 GameObject:
   m_ObjectHideFlags: 0

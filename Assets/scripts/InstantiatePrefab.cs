@@ -5,7 +5,7 @@ using UnityEngine;
 public class InstantiatePrefab : MonoBehaviour
 {
     public GameObject Beans;
-    public int NumberOfCans = 5;
+    public int NumberOfCans = 14;
     public float SpaceBetweenCans = 1f;
 
     // Start is called before the first frame update
