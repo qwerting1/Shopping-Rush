@@ -8,10 +8,12 @@ public class Raycast : MonoBehaviour
 
     private GameObject hitObject;
     private LayerMask layerMask;
+    private LayerMask layerMaskIgnore;
 
     void Start()
     {
         layerMask = 1 << 8;
+        layerMaskIgnore = 1 << 9;
     }
 
     void Update()
@@ -22,8 +24,12 @@ public class Raycast : MonoBehaviour
         if (Physics.Raycast(ray, out hit, raycastDistance, layerMask))
         {
             hitObject = hit.collider.gameObject;
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
+            print(hitObject.tag);
+            if(hitObject.tag != "Untagged") 
+            {
             hitObject.SendMessage("Receive", hitObject.GetInstanceID(), SendMessageOptions.RequireReceiver);
+            }
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
         }
     }
 }

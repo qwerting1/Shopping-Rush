@@ -46,6 +46,10 @@ public class RandomList : MonoBehaviour
         {
         score += 1;
         }
+        else 
+        {
+            score -= 1;
+        }
         RandomWordList.Remove(itemTag); //remove the item from the list
         wordText.text = string.Join("\n", RandomWordList.ToArray()); // update the list
         wordTextScore.text = "Score: " + score;

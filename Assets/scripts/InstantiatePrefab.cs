@@ -5,8 +5,8 @@ using UnityEngine;
 public class InstantiatePrefab : MonoBehaviour
 {
     public GameObject[] Prefabs;
-    public int NumberOfObjects = 14;
-    public float SpaceBetweenObjects = 1f;
+    public int NumberOfObjects = 36;
+    public float SpaceBetweenObjects = 0.79f;
 
     // Start is called before the first frame update
     void Start()
