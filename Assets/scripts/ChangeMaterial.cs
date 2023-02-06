@@ -24,11 +24,14 @@ public class ChangeMaterial : MonoBehaviour
         if (isLookAt == 2)
         {
             //print("the colour has been changed");
-            var colour = this.gameObject.GetComponent<Renderer>().material.color;
-            colour.a = 0.2f; //set the transparency of highlighted object
-            this.gameObject.GetComponent<Renderer>().material.color = colour;
+            //var colour = this.gameObject.GetComponent<Renderer>().material.color;
+            //colour.a = 0.2f; //set the transparency of highlighted object
+            //this.gameObject.GetComponent<Renderer>().material.color = colour;
             var name = this.gameObject.tag;
             wordText.text = name;
+            var mat = this.gameObject.GetComponent<Renderer>().material;
+            mat.EnableKeyword("_EMISSION");
+
             if (Input.GetButtonDown("Interact")) 
             {
                 wordText.text = "";
@@ -42,9 +45,11 @@ public class ChangeMaterial : MonoBehaviour
         }
         if (isLookAt == 0) {
             //print("the colour has been reset");
-            var colourReset = this.gameObject.GetComponent<Renderer>().material.color;
-            colourReset.a = 1f;
-            this.gameObject.GetComponent<Renderer>().material.color = colourReset;
+            //var colourReset = this.gameObject.GetComponent<Renderer>().material.color;
+            //colourReset.a = 1f;
+            //this.gameObject.GetComponent<Renderer>().material.color = colourReset;
+            var mat = this.gameObject.GetComponent<Renderer>().material;
+            mat.DisableKeyword("_EMISSION");
             wordText.text = "";
         }
     }

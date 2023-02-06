@@ -11,6 +11,9 @@ TagManager:
   - soup
   - custard
   - carrots
+  - beef
+  - chicken
+  - pork
   layers:
   - Default
   - TransparentFX
