@@ -11,7 +11,6 @@ public class RigidbodyCharacter : MonoBehaviour
     public float SprintSpeed = 160f;
     public float WalkSpeed = 80f;
     public float SlideSpeed = 8000f;
-    public GameObject beans;
 
     private float Speed;
     private Rigidbody body;
@@ -23,7 +22,7 @@ public class RigidbodyCharacter : MonoBehaviour
     {
         Speed = WalkSpeed;
         body = GetComponent<Rigidbody>();
-        groundChecker = transform.GetChild(0);
+        groundChecker = GameObject.Find("PlayerFeet").transform;
     }
 
     void Update()
@@ -75,11 +74,4 @@ public class RigidbodyCharacter : MonoBehaviour
         }
         body.AddForce(moveDirection.normalized * moveSpeed, ForceMode.Acceleration);
     }
-
-    public void PickupPunishInstantiate()
-    {
-        Instantiate(beans, GameObject.Find("character rigid").GetComponent<Transform>());
-        print("punish complete");
-    }
-
 }

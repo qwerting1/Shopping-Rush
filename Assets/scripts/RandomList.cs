@@ -6,7 +6,7 @@ using TMPro;
 public class RandomList : MonoBehaviour
 {
     public List<string> wordList;//all products in shop
-    public bool IsThatCorrectItem = false;
+    public GameObject beans;
 
     private int score = 0;
 
@@ -38,7 +38,6 @@ public class RandomList : MonoBehaviour
         listTextUI1.SetText(string.Join("\n", RandomWordList1.ToArray()));
         listTextUI2.SetText(string.Join("\n", RandomWordList2.ToArray()));
         listTextUI3.SetText(string.Join("\n", RandomWordList3.ToArray()));
-        print(IsThatCorrectItem);
     }
 
     public void ReceiveTag(string tag)
@@ -49,27 +48,22 @@ public class RandomList : MonoBehaviour
         {
             score += 1;
             RandomWordList1.Remove(itemTag); //remove the item from the list
-            IsThatCorrectItem = true;
-            StartCoroutine(ResetVar());
         }
         else if (RandomWordList2.Contains(itemTag))
         {
             score += 1;
             RandomWordList2.Remove(itemTag); //remove the item from the list
-            IsThatCorrectItem = true;
-            StartCoroutine(ResetVar());
         }
         else if (RandomWordList3.Contains(itemTag))
         {
             score += 1;
             RandomWordList3.Remove(itemTag); //remove the item from the list
-            IsThatCorrectItem = true;
-            StartCoroutine(ResetVar());
         }
         else
         {
             score -= 1;
-            IsThatCorrectItem = false;
+            Instantiate(beans, GameObject.Find("InstantiatePunishLocation").GetComponent<Transform>().transform.position, GameObject.Find("InstantiatePunishLocation").GetComponent<Transform>().transform.rotation);
+            print("punish complete");
         }
 
 
@@ -128,13 +122,5 @@ public class RandomList : MonoBehaviour
             tempWordList.RemoveAt(randomIndex);
             listTextUI3.SetText(string.Join("\n", RandomWordList3.ToArray()));
         }
-    }
-
-    IEnumerator ResetVar()
-    {
-        Debug.Log("Coroutine started!");
-        yield return new WaitForSeconds(0.1f); // wait for 2 seconds
-        IsThatCorrectItem = false;
-        Debug.Log("Coroutine ended after 0.1 seconds!");
     }
 }

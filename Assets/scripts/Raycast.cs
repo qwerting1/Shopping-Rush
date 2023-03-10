@@ -24,7 +24,6 @@ public class Raycast : MonoBehaviour
         if (Physics.Raycast(ray, out hit, raycastDistance, layerMask))
         {
             hitObject = hit.collider.gameObject;
-            //print(hitObject.tag);
             if(hitObject.tag != "Untagged") 
             {
             hitObject.SendMessage("Receive", hitObject.GetInstanceID(), SendMessageOptions.RequireReceiver);
