@@ -7,15 +7,13 @@ public class ChangeMaterial : MonoBehaviour
 {
     // -1 = no, 0 = looked away, 1 = previous frame, 2 = this frame
     private int isLookAt = -1;
-    private TMP_Text wordText;
+    private TMP_Text currentItemText;
 
     
     // Start is called before the first frame update
     void Start()
     {
-        var canvas = GameObject.Find("Canvas");
-        var textTransform = canvas.transform.Find("Item (TMP)");
-        wordText = textTransform.GetComponent<TMP_Text>();
+        currentItemText = GameObject.Find("Item").GetComponent<TextMeshProUGUI>();
     }
 
     // Update is called once per frame
@@ -28,15 +26,23 @@ public class ChangeMaterial : MonoBehaviour
             //colour.a = 0.2f; //set the transparency of highlighted object
             //this.gameObject.GetComponent<Renderer>().material.color = colour;
             var name = this.gameObject.tag;
-            wordText.text = name;
+            currentItemText.text = name;
             var mat = this.gameObject.GetComponent<Renderer>().material;
             mat.EnableKeyword("_EMISSION");
 
-            if (Input.GetButtonDown("Interact")) 
+            if (Input.GetButtonDown("Interact") && GameObject.FindObjectOfType<RandomList>().IsThatCorrectItem == true) 
             {
-                wordText.text = "";
+                currentItemText.text = "";
                 SendTag();
                 Destroy(gameObject);
+            }
+            else if (Input.GetButtonDown("Interact") && GameObject.FindObjectOfType<RandomList>().IsThatCorrectItem == false)
+            {
+                currentItemText.text = "";
+                SendTag();
+                Destroy(gameObject);
+                GameObject.FindObjectOfType<RigidbodyCharacter>().PickupPunishInstantiate();
+                print("punish sent");
             }
         }
         if (isLookAt >= 0)
@@ -50,7 +56,7 @@ public class ChangeMaterial : MonoBehaviour
             //this.gameObject.GetComponent<Renderer>().material.color = colourReset;
             var mat = this.gameObject.GetComponent<Renderer>().material;
             mat.DisableKeyword("_EMISSION");
-            wordText.text = "";
+            currentItemText.text = "";
         }
     }
 
