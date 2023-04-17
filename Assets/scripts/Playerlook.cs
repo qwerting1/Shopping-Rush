@@ -16,6 +16,7 @@ public class Playerlook : MonoBehaviour
 
     void Start()
     {
+        Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked; //locks our cursor in the middle of the screen
     }
 
