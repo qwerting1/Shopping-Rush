@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public enum ShoppingListStatus
 {
     New,
+    Respawning,
     Active,
     Completed,
     Failed,
@@ -19,21 +20,79 @@ public class ShoppingList
     public List<string> Items = new List<string>();
     public float StartTime;
     public float TimeLimit;
+    public float? TimeRemaining;
+    public Color textColor;
+    public float respawnStartTime;
+    public float respawnTime;
+    private List<string> wordList;
+    private ScoreManager scoreManager;
 
-    public ShoppingList(List<string> wordList, float TimeLimit = 30)
+    public ShoppingList(List<string> wordList, ScoreManager scoreManager)
     {
-        this.Status = ShoppingListStatus.Active;
-        this.TimeLimit = TimeLimit;
-        this.StartTime = Time.time;
-        this.Items = GenerateList(wordList);
+        this.Status = ShoppingListStatus.New;
+        this.wordList = wordList;
+        this.textColor = Color.white;
+        this.scoreManager = scoreManager;
     }
 
-    public bool IsTimeUp() { 
-        return Time.time > this.StartTime + this.TimeLimit;
-    }
-    public float GetTimeLeft()
+    public void Update()
     {
-        return (this.StartTime + this.TimeLimit) - Time.time;
+        if (this.Status == ShoppingListStatus.New)
+        {
+            this.Status = ShoppingListStatus.Respawning;
+            this.respawnStartTime = Time.time;
+            this.respawnTime = Random.Range(5, 15);
+        }
+
+        if (this.Status != ShoppingListStatus.Active)
+        {
+            this.textColor = Color.white;
+            if (Time.time > this.respawnStartTime + this.respawnTime)
+            {
+                this.StartList();
+            }
+            return;
+        }
+        // Active lists only below here
+        var isTimeUp = Time.time > this.StartTime + this.TimeLimit;
+        if (isTimeUp)
+        {
+            if (this.Items.Count > 0)
+            {
+                this.scoreManager.DecreaseScore(10);
+            }
+            this.Status = ShoppingListStatus.Failed;
+            this.respawnStartTime = Time.time;
+            this.respawnTime = Random.Range(5, 20);
+            this.TimeRemaining = null;
+        }
+        else
+        {
+            if (this.Items.Count == 0)
+            {
+                this.scoreManager.IncreaseScore(10);
+                this.respawnStartTime = Time.time;
+                this.respawnTime = Random.Range(5, 15);
+                this.Status = ShoppingListStatus.Completed;
+                this.TimeRemaining = null;
+                this.scoreManager.ListCompleted();
+            }
+            else
+            {
+                this.TimeRemaining = (this.StartTime + this.TimeLimit) - Time.time;
+                if (this.TimeRemaining < 5)
+                {
+                    this.textColor = Color.red;
+                }
+                else if (this.TimeRemaining < 10)
+                {
+                    this.textColor = Color.yellow;
+                }
+                else {
+                    this.textColor = Color.green;
+                }
+            }
+        }
     }
 
     public bool RemoveItem(string item)
@@ -43,11 +102,11 @@ public class ShoppingList
 
     public string FormattedList()
     {
-        if(this.Status == ShoppingListStatus.Completed)
+        if (this.Status == ShoppingListStatus.Completed)
         {
             return "Completed list";
         }
-        else if(this.Status == ShoppingListStatus.Failed)
+        else if (this.Status == ShoppingListStatus.Failed)
         {
             return "Failed list";
         }
@@ -55,13 +114,20 @@ public class ShoppingList
         {
             return "";
         }
-        return string.Join("\n", this.Items == null ? new string[] { "" } : this.Items.ToArray()) + "\n\n" + Mathf.Ceil(this.GetTimeLeft());
+        if (this.Status == ShoppingListStatus.Active)
+        {
+            return string.Join("\n", this.Items == null ? new string[] { "" } : this.Items.ToArray()) + "\n\n" + Mathf.Ceil(this.TimeRemaining ?? 0);
+        }
+        return "";
+
     }
-    private List<string> GenerateList(List<string> wordList)
+    public void StartList()
     {
+        this.Status = ShoppingListStatus.Active;
+        this.StartTime = Time.time;
         var list = new List<string>();
-        List<string> tempWordList = new List<string>(wordList);
-        for (int i = 0; i < 5; i++)
+        List<string> tempWordList = new List<string>(this.wordList);
+        for (int i = 0; i < Random.Range(3, 5); i++)
         {
             if (tempWordList.Count == 0)
             {
@@ -72,154 +138,107 @@ public class ShoppingList
             list.Add(tempWordList[randomIndex]);
             tempWordList.RemoveAt(randomIndex);
         }
-        return list;
+        this.TimeLimit = list.Count * 10;
+        this.Items = list;
     }
 }
 
 public class RandomList : MonoBehaviour
 {
     public int ListsCompleted = 0;
-    private readonly float TimeLimitList = 30;
-
-    private float? L1Time;
-    private float? L2Time;
-    private float? L3Time;
 
     public List<string> wordList;//all products in shop
     public GameObject beans;
+    private List<ShoppingList> activeListsSortedByTime;
 
-    //private int score = 0;
-    public ScoreManager scoreManager;
     public TimeManager timeManager;
+    private ScoreManager scoreManager;
 
     private TextMeshProUGUI listTextUI1;
     private TextMeshProUGUI listTextUI2;
     private TextMeshProUGUI listTextUI3;
 
-    //private TextMeshProUGUI scoreTextUI;
-    private TextMeshProUGUI messageTextUI;
 
-    private ShoppingList List1;
-    private ShoppingList List2;
-    private ShoppingList List3;
+    private ShoppingList ShoppingList1;
+    private ShoppingList ShoppingList2;
+    private ShoppingList ShoppingList3;
 
-    private string itemTag; //tag from item
     void Start()
     {
+
         scoreManager = FindObjectOfType<ScoreManager>();
         timeManager = FindObjectOfType<TimeManager>();
-        List1 = new ShoppingList(wordList);
-        List2 = new ShoppingList(wordList);
-        List3= new ShoppingList(wordList);
-        List2.Status = ShoppingListStatus.New;
-        List3.Status = ShoppingListStatus.New;
+        ShoppingList1 = new ShoppingList(wordList, scoreManager);
+        ShoppingList1.StartList();
+        ShoppingList2 = new ShoppingList(wordList, scoreManager);
+        ShoppingList3 = new ShoppingList(wordList, scoreManager);
 
         listTextUI1 = GameObject.Find("List1").GetComponent<TextMeshProUGUI>();
         listTextUI2 = GameObject.Find("List2").GetComponent<TextMeshProUGUI>();
         listTextUI3 = GameObject.Find("List3").GetComponent<TextMeshProUGUI>();
 
-        //scoreTextUI = GameObject.Find("Score (TMP)").GetComponent<TextMeshProUGUI>();
-        messageTextUI = GameObject.Find("messageTextUI").GetComponent<TextMeshProUGUI>();
-
-        StartCoroutine(CreateNewListAfterDelay(2, 12));
-        StartCoroutine(CreateNewListAfterDelay(3, 24));
     }
 
     private void Update()
     {
-        if (timeManager.GetTimeRemaining() > 0f)
-        {
-            //scoreTextUI.SetText("Score: " + score);
-
-            listTextUI1.SetText(List1.FormattedList());
-            listTextUI2.SetText(List2.FormattedList());
-            listTextUI3.SetText(List3.FormattedList());
-
-            if (List1.Status == ShoppingListStatus.Active && List1.IsTimeUp() == true)
-            {
-                List1.Status = ShoppingListStatus.Failed;
-                scoreManager.DecreaseScore(10);
-                StartCoroutine(CreateNewListAfterDelay(1, 5));
-            }
-            else if (List1.Status == ShoppingListStatus.Active && List1.Items.Count == 0)
-            {
-                scoreManager.ListCompleted();
-                List1.Status= ShoppingListStatus.Completed;
-                scoreManager.IncreaseScore(10);
-                StartCoroutine(CreateNewListAfterDelay(1, 5));
-            }
-
-            if (List2.Status == ShoppingListStatus.Active && List2.IsTimeUp() == true)
-            {
-                List2.Status = ShoppingListStatus.Failed;
-                scoreManager.DecreaseScore(10);
-                StartCoroutine(CreateNewListAfterDelay(2, 5));
-            }
-            else if (List2.Status == ShoppingListStatus.Active && List2.Items.Count == 0)
-            {
-                scoreManager.ListCompleted();
-                List2.Status = ShoppingListStatus.Completed;
-                scoreManager.IncreaseScore(10);
-                StartCoroutine(CreateNewListAfterDelay(2, 5));
-            }
-
-            if (List3.Status == ShoppingListStatus.Active && List3.IsTimeUp() == true)
-            {
-                List3.Status = ShoppingListStatus.Failed;
-                scoreManager.DecreaseScore(10);
-                StartCoroutine(CreateNewListAfterDelay(3, 5));
-            }
-            else if (List3.Status == ShoppingListStatus.Active && List3.Items.Count == 0)
-            {
-                scoreManager.ListCompleted();
-                List3.Status = ShoppingListStatus.Completed;
-                scoreManager.IncreaseScore(10);
-                StartCoroutine(CreateNewListAfterDelay(3, 5));
-            }
-        }
-        else
+        if (timeManager.GetTimeRemaining() <= 0f)
         {
             SceneManager.LoadScene(2);//end game
+            return;
         }
+
+        ShoppingList1.Update();
+        ShoppingList2.Update();
+        ShoppingList3.Update();
+
+        activeListsSortedByTime = new List<ShoppingList>();
+        if (ShoppingList1.TimeRemaining != null)
+        {
+            activeListsSortedByTime.Add(ShoppingList1);
+        }
+        if (ShoppingList2.TimeRemaining != null)
+        {
+            activeListsSortedByTime.Add(ShoppingList2);
+        }
+        if (ShoppingList3.TimeRemaining != null)
+        {
+            activeListsSortedByTime.Add(ShoppingList3);
+        }
+        if (activeListsSortedByTime.Count > 0)
+        {
+            activeListsSortedByTime.Sort((x, y) => x.TimeRemaining > y.TimeRemaining ? 1 : 0);
+        }
+
+        listTextUI1.color = ShoppingList1.textColor;
+        listTextUI2.color = ShoppingList2.textColor;
+        listTextUI3.color = ShoppingList3.textColor;
+
+        listTextUI1.SetText(ShoppingList1.FormattedList());
+        listTextUI2.SetText(ShoppingList2.FormattedList());
+        listTextUI3.SetText(ShoppingList3.FormattedList());
+
+
     }
 
     public void ReceiveTag(string tag)
     {
-        itemTag = tag.ToString();
-
-        if (List1.Status == ShoppingListStatus.Active && List1.RemoveItem(tag))
+        var foundItem = false;
+        foreach (var list in activeListsSortedByTime)
         {
-            scoreManager.IncreaseScore(1);
+            if (foundItem == false && list.Items.Contains(tag))
+            {
+                scoreManager.IncreaseScore(1);
+                list.RemoveItem(tag);
+                foundItem = true;
+            }
         }
-        else if (List2.Status == ShoppingListStatus.Active && List2.RemoveItem(tag))
-        {
-            scoreManager.IncreaseScore(1);
-        }
-        else if (List3.Status == ShoppingListStatus.Active && List3.RemoveItem(tag))
-        {
-            scoreManager.IncreaseScore(1);
-        }
-        else
+        if(foundItem == false)
         {
             scoreManager.DecreaseScore(10);
             Instantiate(beans, GameObject.Find("InstantiatePunishLocation").GetComponent<Transform>().transform.position, GameObject.Find("InstantiatePunishLocation").GetComponent<Transform>().transform.rotation);
             print("punish complete");
         }
+
     }
-    IEnumerator CreateNewListAfterDelay(int listID, int delay)
-    {
-        yield return new WaitForSeconds(delay);
-        if (listID == 1)
-        {
-            List1 = new ShoppingList(wordList);
-        }
-        else if (listID == 2)
-        {
-            List2 = new ShoppingList(wordList);
-        }
-        else if (listID == 3)
-        {
-            List3 = new ShoppingList(wordList);
-        }
-    }
+
 }

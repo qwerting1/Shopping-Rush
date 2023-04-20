@@ -33,10 +33,4 @@ public class InstantiatePrefab : MonoBehaviour
             Instantiate(randomPrefab, position, rotation);
         }
     }
-
-
-    // Update is called once per frame
-    void Update()
-    {
-    }
 }

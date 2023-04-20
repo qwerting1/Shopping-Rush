@@ -14,12 +14,6 @@ public class MainMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-      
-    }
-
     public void OnButtonPress()
     {
         Debug.Log("Button clicked times.");

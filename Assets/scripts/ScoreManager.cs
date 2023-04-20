@@ -3,12 +3,14 @@ using TMPro;
 
 public class ScoreManager : MonoBehaviour
 {
-    private int score;
-    private int listsCompleted;
+    private static int score;
+    public static int ListsCompleted;
     private TextMeshProUGUI scoreTextUI; // Reference to the TMP Text for displaying the score
 
     void Start()
     {
+        score = 0;
+        ListsCompleted = 0;
         scoreTextUI = GameObject.Find("Score (TMP)").GetComponent<TextMeshProUGUI>();
         // Initialize the score and update the UI
         score = 0;
@@ -30,7 +32,7 @@ public class ScoreManager : MonoBehaviour
     }
 
     // Call this method to get the current score
-    public int GetScore()
+    public static int GetScore()
     {
         return score;
     }
@@ -43,12 +45,12 @@ public class ScoreManager : MonoBehaviour
 
     public void ListCompleted()
     {
-        listsCompleted++;
+        ListsCompleted++;
     }
 
-    public int GetCompletedCount()
+    public static int GetCompletedCount()
     {
-        return listsCompleted;
+        return ListsCompleted;
     }
 }
 
