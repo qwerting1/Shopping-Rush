@@ -19,6 +19,7 @@ public class ChangeMaterial : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Time.timeScale == 0f) return;
         if (isLookAt == 2)
         {
             var name = this.gameObject.tag;

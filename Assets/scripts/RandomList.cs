@@ -151,7 +151,10 @@ public class RandomList : MonoBehaviour
     public GameObject beans;
     private List<ShoppingList> activeListsSortedByTime;
 
-    public TimeManager timeManager;
+    public AudioSource Correct;
+    public AudioSource Fail;
+
+    private TimeManager timeManager;//used to be public fyi
     private ScoreManager scoreManager;
 
     private TextMeshProUGUI listTextUI1;
@@ -165,7 +168,6 @@ public class RandomList : MonoBehaviour
 
     void Start()
     {
-
         scoreManager = FindObjectOfType<ScoreManager>();
         timeManager = FindObjectOfType<TimeManager>();
         ShoppingList1 = new ShoppingList(wordList, scoreManager);
@@ -227,6 +229,7 @@ public class RandomList : MonoBehaviour
         {
             if (foundItem == false && list.Items.Contains(tag))
             {
+                Correct.Play();
                 scoreManager.IncreaseScore(1);
                 list.RemoveItem(tag);
                 foundItem = true;
@@ -234,11 +237,11 @@ public class RandomList : MonoBehaviour
         }
         if(foundItem == false)
         {
+            Fail.Play();
             scoreManager.DecreaseScore(10);
-            Instantiate(beans, GameObject.Find("InstantiatePunishLocation").GetComponent<Transform>().transform.position, GameObject.Find("InstantiatePunishLocation").GetComponent<Transform>().transform.rotation);
-            print("punish complete");
+            //Instantiate(beans, GameObject.Find("InstantiatePunishLocation").GetComponent<Transform>().transform.position, GameObject.Find("InstantiatePunishLocation").GetComponent<Transform>().transform.rotation);
+            //print("punish complete");
         }
 
     }
-
 }

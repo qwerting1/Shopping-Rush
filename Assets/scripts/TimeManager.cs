@@ -5,11 +5,15 @@ using UnityEngine;
 
 public class TimeManager : MonoBehaviour
 {
+
+    public AudioSource Game;
+
     private TextMeshProUGUI timerText;
     private float timeRemaining = 180.0f; // 3 minutes in seconds
     // Start is called before the first frame update
     void Start()
     {
+        Game.Play();
         timerText = GameObject.Find("Timer").GetComponent<TextMeshProUGUI>();
     }
 
@@ -29,6 +33,7 @@ public class TimeManager : MonoBehaviour
         // Check if time has run out
         if (timeRemaining <= 0.0f)
         {
+            Game.Stop();
             // Time's up! Do something here, like end the game or trigger an event
             Debug.Log("Time's up!");
         }
