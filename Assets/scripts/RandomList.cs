@@ -10,6 +10,7 @@ public enum ShoppingListStatus
     Respawning,
     Active,
     Completed,
+    JustFailed,
     Failed,
     Old
 }
@@ -61,7 +62,7 @@ public class ShoppingList
             {
                 this.scoreManager.DecreaseScore(10);
             }
-            this.Status = ShoppingListStatus.Failed;
+            this.Status = ShoppingListStatus.JustFailed;
             this.respawnStartTime = Time.time;
             this.respawnTime = Random.Range(5, 20);
             this.TimeRemaining = null;
@@ -138,7 +139,7 @@ public class ShoppingList
             list.Add(tempWordList[randomIndex]);
             tempWordList.RemoveAt(randomIndex);
         }
-        this.TimeLimit = list.Count * 10;
+        this.TimeLimit = list.Count * Random.Range(8,14);
         this.Items = list;
     }
 }
@@ -153,6 +154,12 @@ public class RandomList : MonoBehaviour
 
     public AudioSource Correct;
     public AudioSource Fail;
+    public AudioSource Wrong;
+    public AudioSource TimeS;
+
+    public GameObject List1Background;
+    public GameObject List2Background;
+    public GameObject List3Background;
 
     private TimeManager timeManager;//used to be public fyi
     private ScoreManager scoreManager;
@@ -160,7 +167,6 @@ public class RandomList : MonoBehaviour
     private TextMeshProUGUI listTextUI1;
     private TextMeshProUGUI listTextUI2;
     private TextMeshProUGUI listTextUI3;
-
 
     private ShoppingList ShoppingList1;
     private ShoppingList ShoppingList2;
@@ -183,6 +189,38 @@ public class RandomList : MonoBehaviour
 
     private void Update()
     {
+        if(ShoppingList1.Status == ShoppingListStatus.Active)
+        {
+            List1Background.SetActive(true);
+        }
+        if (ShoppingList2.Status == ShoppingListStatus.Active)
+        {
+            List2Background.SetActive(true);
+        }
+        if (ShoppingList3.Status == ShoppingListStatus.Active)
+        {
+            List3Background.SetActive(true);
+        }
+
+        if (ShoppingList1.Status == ShoppingListStatus.JustFailed)
+        {
+            ShoppingList1.Status = ShoppingListStatus.Failed;
+            print("failed");
+            Wrong.Play();
+        }
+        if (ShoppingList2.Status == ShoppingListStatus.JustFailed)
+        {
+            ShoppingList2.Status = ShoppingListStatus.Failed;
+            print("failed");
+            Wrong.Play();
+        }
+        if (ShoppingList3.Status == ShoppingListStatus.JustFailed)
+        {
+            ShoppingList3.Status = ShoppingListStatus.Failed;
+            print("failed");
+            Wrong.Play();
+        }
+
         if (timeManager.GetTimeRemaining() <= 0f)
         {
             SceneManager.LoadScene(2);//end game
@@ -214,6 +252,38 @@ public class RandomList : MonoBehaviour
         listTextUI1.color = ShoppingList1.textColor;
         listTextUI2.color = ShoppingList2.textColor;
         listTextUI3.color = ShoppingList3.textColor;
+
+        if (Mathf.Ceil(ShoppingList1.TimeRemaining ?? 0) == 6)
+        {
+            print("time warning");
+            TimeS.Play();
+        }
+        if (Mathf.Ceil(ShoppingList2.TimeRemaining ?? 0) == 6)
+        {
+            print("time warning");
+            TimeS.Play();
+        }
+        if (Mathf.Ceil(ShoppingList3.TimeRemaining ?? 0) == 6)
+        {
+            print("time warning");
+            TimeS.Play();
+        }
+
+        if (Mathf.Ceil(ShoppingList1.TimeRemaining ?? 0) == 11)
+        {
+            print("time warning");
+            TimeS.Play();
+        }
+        if (Mathf.Ceil(ShoppingList2.TimeRemaining ?? 0) == 11)
+        {
+            print("time warning");
+            TimeS.Play();
+        }
+        if (Mathf.Ceil(ShoppingList3.TimeRemaining ?? 0) == 11)
+        {
+            print("time warning");
+            TimeS.Play();
+        }
 
         listTextUI1.SetText(ShoppingList1.FormattedList());
         listTextUI2.SetText(ShoppingList2.FormattedList());

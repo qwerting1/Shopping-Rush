@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Raycast : MonoBehaviour
 {
-    public float raycastDistance = 5f;
+    public float raycastDistance = 8f;
 
     private GameObject hitObject;
     private LayerMask layerMask;
