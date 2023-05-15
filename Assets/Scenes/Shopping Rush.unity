@@ -9085,7 +9085,7 @@ MonoBehaviour:
   PlayerBody: {fileID: 3103937023516858870}
   MouseSensitivity: 1.5
   LookUpLimit: -55
-  LookDownLimit: 40
+  LookDownLimit: 60
 --- !u!81 &3103937023879279399
 AudioListener:
   m_ObjectHideFlags: 0

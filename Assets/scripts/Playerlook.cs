@@ -9,7 +9,7 @@ public class Playerlook : MonoBehaviour
     public Transform PlayerBody;
     public float MouseSensitivity = 1.5f;
     public float LookUpLimit = -55f;
-    public float LookDownLimit = 40f;
+    public float LookDownLimit = 60f;
 
     float yRotation;
     float xRotation = 0;
