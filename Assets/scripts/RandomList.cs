@@ -172,6 +172,8 @@ public class RandomList : MonoBehaviour
     private ShoppingList ShoppingList2;
     private ShoppingList ShoppingList3;
 
+    private bool isAllowedToQuit = true;
+
     void Start()
     {
         scoreManager = FindObjectOfType<ScoreManager>();
@@ -205,27 +207,22 @@ public class RandomList : MonoBehaviour
         if (ShoppingList1.Status == ShoppingListStatus.JustFailed)
         {
             ShoppingList1.Status = ShoppingListStatus.Failed;
-            print("failed");
+            //print("failed");
             Wrong.Play();
         }
         if (ShoppingList2.Status == ShoppingListStatus.JustFailed)
         {
             ShoppingList2.Status = ShoppingListStatus.Failed;
-            print("failed");
+            //print("failed");
             Wrong.Play();
         }
         if (ShoppingList3.Status == ShoppingListStatus.JustFailed)
         {
             ShoppingList3.Status = ShoppingListStatus.Failed;
-            print("failed");
+            //print("failed");
             Wrong.Play();
         }
 
-        if (timeManager.GetTimeRemaining() <= 0f)
-        {
-            SceneManager.LoadScene(2);//end game
-            return;
-        }
 
         ShoppingList1.Update();
         ShoppingList2.Update();
@@ -249,39 +246,54 @@ public class RandomList : MonoBehaviour
             activeListsSortedByTime.Sort((x, y) => x.TimeRemaining > y.TimeRemaining ? 1 : 0);
         }
 
+        if (timeManager.GetTimeRemaining() <= 0f)
+        {
+            if(isAllowedToQuit)
+            {
+                isAllowedToQuit = false;
+                timeManager.AddTimeRemaining((float)activeListsSortedByTime[0].TimeRemaining + 1f);
+                timeManager.SetTimerTextColor(Color.red);
+            }
+            if (timeManager.GetTimeRemaining() <= 0f)
+            {
+                SceneManager.LoadScene(2);//end game
+                return;
+            }
+    }
+
         listTextUI1.color = ShoppingList1.textColor;
         listTextUI2.color = ShoppingList2.textColor;
         listTextUI3.color = ShoppingList3.textColor;
 
         if (Mathf.Ceil(ShoppingList1.TimeRemaining ?? 0) == 6)
         {
-            print("time warning");
+            //print("time warning");
             TimeS.Play();
         }
         if (Mathf.Ceil(ShoppingList2.TimeRemaining ?? 0) == 6)
         {
-            print("time warning");
+            //print("time warning");
             TimeS.Play();
         }
         if (Mathf.Ceil(ShoppingList3.TimeRemaining ?? 0) == 6)
         {
-            print("time warning");
+            //print("time warning");
             TimeS.Play();
         }
 
         if (Mathf.Ceil(ShoppingList1.TimeRemaining ?? 0) == 11)
         {
-            print("time warning");
+            //print("time warning");
             TimeS.Play();
         }
         if (Mathf.Ceil(ShoppingList2.TimeRemaining ?? 0) == 11)
         {
-            print("time warning");
+            //print("time warning");
             TimeS.Play();
         }
         if (Mathf.Ceil(ShoppingList3.TimeRemaining ?? 0) == 11)
         {
-            print("time warning");
+            //print("time warning");
             TimeS.Play();
         }
 
