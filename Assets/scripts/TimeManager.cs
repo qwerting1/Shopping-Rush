@@ -9,8 +9,7 @@ public class TimeManager : MonoBehaviour
     public AudioSource Game;
 
     private TextMeshProUGUI timerText;
-    //private float timeRemaining = 180.0f; // 3 minutes in seconds
-    private float timeRemaining = 30.0f; // 3 minutes in seconds
+    private float timeRemaining = 180.0f; // 3 minutes in seconds
     // Start is called before the first frame update
     void Start()
     {
